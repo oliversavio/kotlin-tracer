@@ -39,5 +39,11 @@ class TuplesTest {
         assertTrue(v.isVector())
     }
 
+    @Test
+    fun test_compare_tuples() {
+        assertEquals(point(4.1f,-4.3f,1.010001f), point(4.1f,-4.3f,1.01001f))
+        assertEquals(point(4.1f,-4.3f,1.01f), point(4.1f,-4.3f,1.01f))
+    }
+
 
 }
