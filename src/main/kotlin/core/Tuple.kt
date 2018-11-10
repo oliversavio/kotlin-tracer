@@ -24,11 +24,11 @@ data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
     }
 
     fun isPoint(): Boolean {
-        return w == 1.toByte()
+        return w > 0.toByte()
     }
 
     fun isVector(): Boolean {
-        return w == 0.toByte()
+        return w < 1.toByte()
     }
 
     operator fun plus(o: Tuple): Tuple {
@@ -47,6 +47,14 @@ data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
 
     operator fun unaryMinus() = Tuple(-x, -y, -z, (-w).toByte())
 
+    operator fun times(scalar: Float): Tuple {
+        return Tuple(x * scalar, y * scalar, z * scalar, (w * scalar).toByte())
+    }
+
+    operator fun div(scalar: Float): Tuple {
+        return times(1f / scalar)
+    }
+
 
 }
 
@@ -56,4 +64,16 @@ fun point(x: Float, y: Float, z: Float): Tuple {
 
 fun vector(x: Float, y: Float, z: Float): Tuple {
     return Tuple(x, y, z, 0)
+}
+
+fun magnitude(vector: Tuple): Double {
+    if (!vector.isVector()) {
+        throw IllegalArgumentException("Can only calculate magnitude of Vectors")
+    }
+
+    val xSqd = vector.x * vector.x
+    val ySqd = vector.y * vector.y
+    val zSqd = vector.z * vector.z
+
+    return Math.sqrt(xSqd.toDouble() + ySqd.toDouble() + zSqd.toDouble())
 }

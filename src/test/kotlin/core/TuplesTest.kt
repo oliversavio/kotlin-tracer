@@ -96,7 +96,7 @@ class TuplesTest {
 
     @Test
     fun test_subtracting_a_vector_from_the_zero_vector() {
-        val zero = vector(0f,0f,0f)
+        val zero = vector(0f, 0f, 0f)
         val v = vector(1f, -2f, 3f)
 
         assertEquals(vector(-1f, 2f, -3f), zero - v)
@@ -106,6 +106,54 @@ class TuplesTest {
     fun test_negating_a_tuple() {
         val a = Tuple(1f, -2f, 3f, -4)
         assertEquals(Tuple(-1f, 2f, -3f, 4), -a)
+    }
+
+    @Test
+    fun test_multiplying_a_tuple_by_a_scalar() {
+        val a = Tuple(1f, -2f, 3f, -4)
+        assertEquals(Tuple(3.5f, -7f, 10.5f, -14), a * 3.5f)
+    }
+
+    @Test
+    fun test_multiplying_a_tuple_by_a_fraction() {
+        val a = Tuple(1f, -2f, 3f, -4)
+        assertEquals(Tuple(0.5f, -1f, 1.5f, -2), a * 0.5f)
+    }
+
+    @Test
+    fun test_dividing_a_tuple_by_a_scalar() {
+        val a = Tuple(1f, -2f, 3f, -4)
+        assertEquals(Tuple(0.5f, -1f, 1.5f, -2), a / 2f)
+    }
+
+    @Test
+    fun test_magnitude_of_vector_1_0_0() {
+        val v = vector(1f,0f,0f)
+        assertEquals(1.0, magnitude(v))
+    }
+
+    @Test
+    fun test_magnitude_of_vector_0_1_0() {
+        val v = vector(0f,1f,0f)
+        assertEquals(1.0, magnitude(v))
+    }
+
+    @Test
+    fun test_magnitude_of_vector_0_0_1() {
+        val v = vector(0f,0f,1f)
+        assertEquals(1.0, magnitude(v))
+    }
+
+    @Test
+    fun test_magnitude_of_vector_1_2_3() {
+        val v = vector(1f,2f,3f)
+        assertEquals(Math.sqrt(14.0), magnitude(v))
+    }
+
+    @Test
+    fun test_magnitude_of_vector_m1_m2_m3() {
+        val v = vector(-1f,-2f,-3f)
+        assertEquals(Math.sqrt(14.0), magnitude(v))
     }
 
 }
