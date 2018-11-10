@@ -128,32 +128,51 @@ class TuplesTest {
 
     @Test
     fun test_magnitude_of_vector_1_0_0() {
-        val v = vector(1f,0f,0f)
+        val v = vector(1f, 0f, 0f)
         assertEquals(1.0, magnitude(v))
     }
 
     @Test
     fun test_magnitude_of_vector_0_1_0() {
-        val v = vector(0f,1f,0f)
+        val v = vector(0f, 1f, 0f)
         assertEquals(1.0, magnitude(v))
     }
 
     @Test
     fun test_magnitude_of_vector_0_0_1() {
-        val v = vector(0f,0f,1f)
+        val v = vector(0f, 0f, 1f)
         assertEquals(1.0, magnitude(v))
     }
 
     @Test
     fun test_magnitude_of_vector_1_2_3() {
-        val v = vector(1f,2f,3f)
+        val v = vector(1f, 2f, 3f)
         assertEquals(Math.sqrt(14.0), magnitude(v))
     }
 
     @Test
     fun test_magnitude_of_vector_m1_m2_m3() {
-        val v = vector(-1f,-2f,-3f)
+        val v = vector(-1f, -2f, -3f)
         assertEquals(Math.sqrt(14.0), magnitude(v))
     }
 
+    @Test
+    fun test_normalizing_vector_4_0_0_gives_1_0_0() {
+        val v = vector(4f, 0f, 0f)
+        assertEquals(vector(1f, 0f, 0f), normalize(v))
+    }
+
+    @Test
+    fun test_normalizing_vector_1_2_3() {
+        val v = vector(1f, 2f, 3f)
+        assertEquals(vector(0.26726f, 0.53452f, 0.80178f), normalize(v))
+    }
+
+    @Test
+    fun test_the_magnitude_of_a_normalized_vector() {
+        val v = vector(1f, 2f, 3f)
+        assertEquals(1.0, magnitude(normalize(v)), 0.00001)
+    }
+
 }
+

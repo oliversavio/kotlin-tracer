@@ -77,3 +77,15 @@ fun magnitude(vector: Tuple): Double {
 
     return Math.sqrt(xSqd.toDouble() + ySqd.toDouble() + zSqd.toDouble())
 }
+
+fun normalize(vector: Tuple): Tuple {
+    if (!vector.isVector()) {
+        throw IllegalArgumentException("Can only normalize Vectors")
+    }
+    val magnitude = magnitude(vector)
+
+    return Tuple(vector.x / magnitude.toFloat(),
+            vector.y / magnitude.toFloat(),
+            vector.z / magnitude.toFloat(),
+            (vector.w / magnitude).toByte())
+}
