@@ -174,5 +174,25 @@ class TuplesTest {
         assertEquals(1.0, magnitude(normalize(v)), 0.00001)
     }
 
+    @Test
+    fun test_the_dot_product_of_two_tuples() {
+        val a = vector(1f, 2f, 3f)
+        val b = vector(2f, 3f, 4f)
+
+        assertEquals(20f, dot(a, b))
+    }
+
+    @Test
+    fun test_cross_product_of_two_vectors() {
+        val a = vector(1f, 2f, 3f)
+        val b = vector(2f, 3f, 4f)
+
+        assertEquals(vector(-1f, 2f, -1f), cross(a, b))
+        assertEquals(vector(1f, -2f, 1f), cross(b, a))
+    }
+
+
+
+
 }
 

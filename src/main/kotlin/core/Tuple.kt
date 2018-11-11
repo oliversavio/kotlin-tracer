@@ -89,3 +89,19 @@ fun normalize(vector: Tuple): Tuple {
             vector.z / magnitude.toFloat(),
             (vector.w / magnitude).toByte())
 }
+
+fun dot(a: Tuple, b: Tuple): Float {
+    if (!a.isVector() || !b.isVector()) {
+        throw IllegalArgumentException("Can only calculate dot product of Vectors")
+    }
+
+    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
+}
+
+fun cross(a: Tuple, b: Tuple): Tuple {
+    if (!a.isVector() || !b.isVector()) {
+        throw IllegalArgumentException("Can only calculate cross product of Vectors")
+    }
+
+    return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+}
