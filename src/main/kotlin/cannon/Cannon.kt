@@ -11,15 +11,16 @@ data class World(val gravity: Tuple, val wind: Tuple)
 
 
 fun main(args: Array<String>) {
-    var p = Projectile(point(0f, 1f, 0f), normalize(vector(0.01f, 1f, 0f)))
+    var p = Projectile(point(0f, 1f, 0f), normalize(vector(1f, 1f, 0f))* 5f)
     val world = World(vector(0f, -0.1f, 0f), vector(-0.01f, 0f, 0f))
 
-
+    var count = 0;
     do {
         println("Position: " + p.position)
         p = tick(world, p)
+        count ++
     } while (p.position.y > 0)
-
+    print("Ticks: " + count)
 
 }
 

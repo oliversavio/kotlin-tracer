@@ -50,7 +50,7 @@ class TuplesTest {
         val a = Tuple(3f, -2f, 5f, 1)
         val b = Tuple(-2f, 3f, 1f, 0)
 
-        assertEquals(Tuple(1f, 1f, 6f, 1), a + b)
+        assertEquals(Point(1f, 1f, 6f, 1), a + b)
 
     }
 

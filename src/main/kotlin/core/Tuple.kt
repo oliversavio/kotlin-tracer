@@ -1,6 +1,6 @@
 package core
 
-data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
+open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MIN_VALUE) {
 
     private val epsilon = 0.00001f
 
@@ -16,11 +16,10 @@ data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
         val diffw = Math.abs(w - other.w)
 
         return diffx < epsilon && diffy < epsilon && diffz < epsilon && diffw < epsilon
-
     }
 
     override fun hashCode(): Int {
-        return super.hashCode()
+        return (31 + x.hashCode() + y.hashCode() + z.hashCode() + w.hashCode()).hashCode()
     }
 
     fun isPoint(): Boolean {
@@ -35,14 +34,14 @@ data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
         if (w + o.w > 1) {
             throw IllegalStateException("Cannot add two Points")
         }
-        return Tuple(x + o.x, y + o.y, z + o.z, ((w + o.w)).toByte())
+        return tupleBuilder(x + o.x, y + o.y, z + o.z, ((w + o.w)).toByte())
     }
 
     operator fun minus(o: Tuple): Tuple {
         if (w - o.w < 0) {
             throw IllegalStateException("Cannot subtract point from vector")
         }
-        return Tuple(x - o.x, y - o.y, z - o.z, ((w - o.w)).toByte())
+        return tupleBuilder(x - o.x, y - o.y, z - o.z, ((w - o.w)).toByte())
     }
 
     operator fun unaryMinus() = Tuple(-x, -y, -z, (-w).toByte())
@@ -55,53 +54,11 @@ data class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte) {
         return times(1f / scalar)
     }
 
-
-}
-
-fun point(x: Float, y: Float, z: Float): Tuple {
-    return Tuple(x, y, z, 1)
-}
-
-fun vector(x: Float, y: Float, z: Float): Tuple {
-    return Tuple(x, y, z, 0)
-}
-
-fun magnitude(vector: Tuple): Double {
-    if (!vector.isVector()) {
-        throw IllegalArgumentException("Can only calculate magnitude of Vectors")
+    override fun toString(): String {
+        return "${this.javaClass.name}(x=$x,y=$y,z=$z,w=$w)"
     }
 
-    val xSqd = vector.x * vector.x
-    val ySqd = vector.y * vector.y
-    val zSqd = vector.z * vector.z
-
-    return Math.sqrt(xSqd.toDouble() + ySqd.toDouble() + zSqd.toDouble())
 }
 
-fun normalize(vector: Tuple): Tuple {
-    if (!vector.isVector()) {
-        throw IllegalArgumentException("Can only normalize Vectors")
-    }
-    val magnitude = magnitude(vector)
 
-    return Tuple(vector.x / magnitude.toFloat(),
-            vector.y / magnitude.toFloat(),
-            vector.z / magnitude.toFloat(),
-            (vector.w / magnitude).toByte())
-}
 
-fun dot(a: Tuple, b: Tuple): Float {
-    if (!a.isVector() || !b.isVector()) {
-        throw IllegalArgumentException("Can only calculate dot product of Vectors")
-    }
-
-    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
-}
-
-fun cross(a: Tuple, b: Tuple): Tuple {
-    if (!a.isVector() || !b.isVector()) {
-        throw IllegalArgumentException("Can only calculate cross product of Vectors")
-    }
-
-    return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
-}
