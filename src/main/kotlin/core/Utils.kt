@@ -66,16 +66,14 @@ fun tupleBuilder(x: Float, y: Float, z: Float, w: Byte, op1: Tuple, op2: Tuple =
      */
 
 
-    lateinit var concreteTuple: Tuple
     when {
-        op1 is Color && op2 is Color -> concreteTuple = Color(x, y, z)
-        op1 is Point && op2 is Point -> concreteTuple = Vector(x, y, z, w)
-        op1 is Point && op2 is Vector -> concreteTuple = Point(x, y, z, w)
-        op1 is Vector && op2 is Point -> concreteTuple = Point(x, y, z, w)
-        op1 is Vector && op2 is Vector -> concreteTuple = Vector(x, y, z, w)
-        op1 is Tuple && op2 is Tuple -> concreteTuple = Tuple(x, y, z, w)
-        else -> throw IllegalStateException("Unable to determine tuple type")
+        op1 is Color && op2 is Color -> return Color(x, y, z)
+        op1 is Point && op2 is Point -> return Vector(x, y, z, w)
+        op1 is Point && op2 is Vector -> return Point(x, y, z, w)
+        op1 is Vector && op2 is Point -> return Point(x, y, z, w)
+        op1 is Vector && op2 is Vector -> return Vector(x, y, z, w)
+        else -> return Tuple(x, y, z, w)
+
     }
 
-    return concreteTuple
 }
