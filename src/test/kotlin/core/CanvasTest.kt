@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 
 class CanvasTest {
 
-
     @Test
     fun test_create_canvas() {
         val c = Canvas(10, 20)
@@ -14,7 +13,7 @@ class CanvasTest {
 
         for (i in 0 until c.height - 1) {
             for (j in 0 until c.width - 1) {
-                assertEquals(Color(0f, 0f, 0f), c.canvas[i][j])
+                assertEquals(Color.black(), c.canvas[i][j])
             }
         }
     }
@@ -28,6 +27,4 @@ class CanvasTest {
         assertEquals(red, canvas.pixelAt(2, 3))
 
     }
-
-
 }
