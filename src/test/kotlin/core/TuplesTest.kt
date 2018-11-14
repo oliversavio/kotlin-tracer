@@ -50,7 +50,7 @@ class TuplesTest {
         val a = Tuple(3f, -2f, 5f, 1)
         val b = Tuple(-2f, 3f, 1f, 0)
 
-        assertEquals(Point(1f, 1f, 6f, 1), a + b)
+        assertEquals(Tuple(1f, 1f, 6f, 1), a + b)
 
     }
 
@@ -106,6 +106,12 @@ class TuplesTest {
     fun test_negating_a_tuple() {
         val a = Tuple(1f, -2f, 3f, -4)
         assertEquals(Tuple(-1f, 2f, -3f, 4), -a)
+    }
+
+    @Test
+    fun test_negating_a_point() {
+        val a = point(1f, -2f, 3f)
+        assertEquals(Tuple(-1f, 2f, -3f, -1), -a)
     }
 
     @Test

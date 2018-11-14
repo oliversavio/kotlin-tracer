@@ -20,13 +20,13 @@ fun magnitude(vector: Tuple): Double {
     return Math.sqrt(xSqd.toDouble() + ySqd.toDouble() + zSqd.toDouble())
 }
 
-fun normalize(vector: Vector): Tuple {
+fun normalize(vector: Vector): Vector {
     if (!vector.isVector()) {
         throw IllegalArgumentException("Can only normalize Vectors")
     }
     val magnitude = magnitude(vector)
 
-    return tupleBuilder(vector.x / magnitude.toFloat(),
+    return Vector(vector.x / magnitude.toFloat(),
             vector.y / magnitude.toFloat(),
             vector.z / magnitude.toFloat(),
             (vector.w / magnitude).toByte())
@@ -48,12 +48,32 @@ fun cross(a: Tuple, b: Tuple): Tuple {
     return vector(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 }
 
-fun tupleBuilder(x: Float, y: Float, z: Float, w: Byte): Tuple {
+fun tupleBuilder(x: Float, y: Float, z: Float, w: Byte, op1: Tuple, op2: Tuple = op1): Tuple {
+    /*
+        P = 1, V = 0, C = -128
+        ADD:
+            P - P = V
+
+            P + V = P
+            P - V = P
+
+            V + P = P
+
+            V + V = V
+            V - V = V
+        SUB:
+
+     */
+
+
     lateinit var concreteTuple: Tuple
     when {
-        w > 0.toByte() -> concreteTuple = Point(x, y, z, w)
-        w < 1.toByte() && w > Byte.MIN_VALUE -> concreteTuple = Vector(x, y, z, w)
-        w == Byte.MIN_VALUE -> concreteTuple = Color(x, y, z)
+        op1 is Color && op2 is Color -> concreteTuple = Color(x, y, z)
+        op1 is Point && op2 is Point -> concreteTuple = Vector(x, y, z, w)
+        op1 is Point && op2 is Vector -> concreteTuple = Point(x, y, z, w)
+        op1 is Vector && op2 is Point -> concreteTuple = Point(x, y, z, w)
+        op1 is Vector && op2 is Vector -> concreteTuple = Vector(x, y, z, w)
+        op1 is Tuple && op2 is Tuple -> concreteTuple = Tuple(x, y, z, w)
         else -> throw IllegalStateException("Unable to determine tuple type")
     }
 

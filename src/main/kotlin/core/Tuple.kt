@@ -34,20 +34,21 @@ open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MI
         if (w + o.w > 1) {
             throw IllegalStateException("Cannot add two Points")
         }
-        return tupleBuilder(x + o.x, y + o.y, z + o.z, ((w + o.w)).toByte())
+
+        return tupleBuilder(x + o.x, y + o.y, z + o.z, ((w + o.w)).toByte(), this, o)
     }
 
     operator fun minus(o: Tuple): Tuple {
         if (w - o.w < 0) {
             throw IllegalStateException("Cannot subtract point from vector")
         }
-        return tupleBuilder(x - o.x, y - o.y, z - o.z, ((w - o.w)).toByte())
+        return tupleBuilder(x - o.x, y - o.y, z - o.z, ((w - o.w)).toByte(), this, o)
     }
 
     operator fun unaryMinus() = Tuple(-x, -y, -z, (-w).toByte())
 
     operator fun times(scalar: Float): Tuple {
-        return Tuple(x * scalar, y * scalar, z * scalar, (w * scalar).toByte())
+        return tupleBuilder(x * scalar, y * scalar, z * scalar, (w * scalar).toByte(), this)
     }
 
     operator fun div(scalar: Float): Tuple {

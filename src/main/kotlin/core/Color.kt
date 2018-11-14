@@ -1,3 +1,3 @@
 package core
 
-class Color(r: Float, g: Float, b: Float) : Tuple(r, b, g)
+class Color(val r: Float, val g: Float, val b: Float) : Tuple(r, g, b)
