@@ -40,7 +40,7 @@ class ColorTest {
         val c1 = Color(1f, 0.2f, 0.4f)
         val c2 = Color(0.9f, 1f, 0.1f)
 
-        assertEquals(Color(0.9f, 0.2f, 0.04f), c1 * c2)
+        assertEquals(Color(0.9f, 0.2f, 0.04f), c1.product(c2))
     }
 
 

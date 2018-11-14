@@ -1,7 +1,5 @@
 package core
 
-import java.lang.UnsupportedOperationException
-
 open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MIN_VALUE) {
 
     private val epsilon = 0.00001f
@@ -49,13 +47,10 @@ open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MI
 
     operator fun unaryMinus() = Tuple(-x, -y, -z, (-w).toByte())
 
-    operator fun times(o: Any): Tuple {
-        when (o) {
-            is Float -> return tupleBuilder(x * o, y * o, z * o, (w * o).toByte(), this)
-            is Color -> return tupleBuilder(x * o.x, y * o.y, z * o.z, -128, this, o)
-            else -> throw UnsupportedOperationException("Cannot call method times.")
-        }
+    operator fun times(scalar: Float): Tuple {
+        return tupleBuilder(x * scalar, y * scalar, z * scalar, (w * scalar).toByte(), this)
     }
+
 
 
     operator fun div(scalar: Float): Tuple {
