@@ -27,4 +27,13 @@ class CanvasTest {
         assertEquals(red, canvas.pixelAt(2, 3))
 
     }
+
+    @Test
+    fun test_construct_the_ppm_header() {
+        val c = Canvas(5,3)
+        c.writePixel(0,0, Color(1.5f, 0f, 0f))
+        c.writePixel(1,2, Color(0f, 0.5f, 0f))
+        c.writePixel(2,4, Color(-0.5f, 0f, 1f))
+        println(c.canvasToPPM())
+    }
 }
