@@ -4,8 +4,7 @@ class Canvas(val width: Int, val height: Int) {
     private val header = "P3"
     private val space = " "
     private val maxPixelValue = "255"
-    private val cols = Array(width, { _ -> Color(0f, 0f, 0f) })
-    val canvas: Array<Array<Color>> = Array(height, { cols })
+    val canvas: Array<Array<Color>> = Array(height) { Array(width) { Color.black() } }
 
 
     fun pixelAt(row: Int, col: Int): Color {
@@ -13,7 +12,7 @@ class Canvas(val width: Int, val height: Int) {
         return canvas[row][col]
     }
 
-    fun writePixel(row: Int, col: Int, color: Color) {
+    fun writePixel(col: Int, row: Int, color: Color) {
         validatePixelCoordinates(row, col)
         canvas[row][col] = Color(color.r, color.g, color.b)
     }
@@ -26,16 +25,16 @@ class Canvas(val width: Int, val height: Int) {
         sBuffer.append(maxPixelValue)
         sBuffer.append("\n")
 
-        for(r in 0 until height) {
-            for(c in 0 until width) {
+        for (r in 0 until height) {
+            for (c in 0 until width) {
                 sBuffer.append(convertToPPMScale(canvas[r][c].r))
                 sBuffer.append(space)
                 sBuffer.append(convertToPPMScale(canvas[r][c].g))
                 sBuffer.append(space)
                 sBuffer.append(convertToPPMScale(canvas[r][c].b))
-                sBuffer.append(space)
+                if (c < width - 1) sBuffer.append(space)
             }
-            sBuffer.append("\n")
+            if (r < height - 1) sBuffer.append("\n")
         }
 
         return sBuffer.toString()

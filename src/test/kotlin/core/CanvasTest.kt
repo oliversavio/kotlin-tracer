@@ -5,6 +5,13 @@ import org.junit.jupiter.api.Test
 
 class CanvasTest {
 
+    private val headerSplit = """
+            P3
+            5 3
+            255
+
+        """.trimIndent()
+
     @Test
     fun test_create_canvas() {
         val c = Canvas(10, 20)
@@ -22,7 +29,7 @@ class CanvasTest {
     fun test_writing_pixel_to_canvas() {
         val canvas = Canvas(10, 20)
         val red = Color(1f, 0f, 0f)
-        canvas.writePixel(2, 3, red)
+        canvas.writePixel(3, 2, red)
 
         assertEquals(red, canvas.pixelAt(2, 3))
 
@@ -30,10 +37,19 @@ class CanvasTest {
 
     @Test
     fun test_construct_the_ppm_header() {
-        val c = Canvas(5,3)
-        c.writePixel(0,0, Color(1.5f, 0f, 0f))
-        c.writePixel(1,2, Color(0f, 0.5f, 0f))
-        c.writePixel(2,4, Color(-0.5f, 0f, 1f))
-        println(c.canvasToPPM())
+        val c = Canvas(5, 3)
+        c.writePixel(0, 0, Color(1.5f, 0f, 0f))
+        c.writePixel(2, 1, Color(0f, 0.5f, 0f))
+        c.writePixel(4, 2, Color(-0.5f, 0f, 1f))
+
+        val expected = """
+                    255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                    0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
+                    0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
+                    """.trimIndent()
+
+        val actual = c.canvasToPPM().split(headerSplit)[1]
+        assertEquals(expected, actual)
+
     }
 }
