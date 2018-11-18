@@ -26,31 +26,52 @@ class Canvas(val width: Int, val height: Int) {
         sBuffer.append("\n")
 
         for (r in 0 until height) {
+            val rowBuffer = StringBuilder()
             for (c in 0 until width) {
-                sBuffer.append(convertToPPMScale(canvas[r][c].r))
-                sBuffer.append(space)
-                sBuffer.append(convertToPPMScale(canvas[r][c].g))
-                sBuffer.append(space)
-                sBuffer.append(convertToPPMScale(canvas[r][c].b))
-                if (c < width - 1) sBuffer.append(space)
+                rowBuffer.append(convertToPPMScale(canvas[r][c].r))
+                rowBuffer.append(space)
+                rowBuffer.append(convertToPPMScale(canvas[r][c].g))
+                rowBuffer.append(space)
+                rowBuffer.append(convertToPPMScale(canvas[r][c].b))
+                if (c < width - 1) rowBuffer.append(space)
             }
-            if (r < height - 1) sBuffer.append("\n")
+            sBuffer.append(splitLongLinesForPPM(rowBuffer))
+            sBuffer.append("\n")
         }
 
         return sBuffer.toString()
     }
 
     private fun validatePixelCoordinates(row: Int, col: Int) {
-        if (row >= height || col >= width || row < 0 || col < 0) throw IllegalArgumentException("Invalid pixel coordinates [$row,$col]")
+        if (row >= height || col >= width || row < 0 || col < 0)
+            throw IllegalArgumentException("Invalid pixel coordinates [$row,$col]")
     }
 
     private fun convertToPPMScale(f: Float): String {
-        val r = Math.ceil(f * 255.0).toInt()
+        val r = Math.round(f * 255.0).toInt()
 
         when {
             r > 255 -> return "255"
             r < 0 -> return "0"
             else -> return r.toString()
+        }
+    }
+
+    private fun splitLongLinesForPPM(buffer: StringBuilder): String {
+        val splits = buffer.length / 70
+        val factor = 70
+        for (i in 1..splits) {
+            insertNewline(factor * i - 1, buffer)
+        }
+
+        return buffer.toString()
+    }
+
+    private fun insertNewline(factor: Int, buffer: StringBuilder) {
+        if (buffer[factor] == ' ') {
+            buffer.setCharAt(factor, '\n')
+        } else {
+            insertNewline(factor - 1, buffer)
         }
     }
 

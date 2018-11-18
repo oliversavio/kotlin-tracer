@@ -2,6 +2,7 @@ package core
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.lang.StringBuilder
 
 class CanvasTest {
 
@@ -46,10 +47,44 @@ class CanvasTest {
                     255 0 0 0 0 0 0 0 0 0 0 0 0 0 0
                     0 0 0 0 0 0 0 128 0 0 0 0 0 0 0
                     0 0 0 0 0 0 0 0 0 0 0 0 0 0 255
+
                     """.trimIndent()
 
         val actual = c.canvasToPPM().split(headerSplit)[1]
         assertEquals(expected, actual)
 
     }
+
+    @Test
+    fun test_splitting_long_lines_in_ppm_file() {
+        val c = Canvas(10, 2)
+
+        for (r in 0 until c.height) {
+            for (col in 0 until c.width) {
+                c.canvas[r][col] = Color(1f, 0.8f, 0.6f)
+            }
+        }
+
+        val expected = """
+            255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+            153 255 204 153 255 204 153 255 204 153 255 204 153
+            255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204
+            153 255 204 153 255 204 153 255 204 153 255 204 153
+
+        """.trimIndent()
+
+        val headSplitter = """
+            P3
+            10 2
+            255
+
+        """.trimIndent()
+
+        val actual = c.canvasToPPM().split(headSplitter)[1]
+        assertEquals(expected, actual)
+
+
+    }
+
+
 }
