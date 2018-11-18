@@ -4,6 +4,7 @@ class Canvas(val width: Int, val height: Int) {
     private val header = "P3"
     private val space = " "
     private val maxPixelValue = "255"
+    private val ppmLineLimit = 70
     val canvas: Array<Array<Color>> = Array(height) { Array(width) { Color.black() } }
 
 
@@ -15,6 +16,14 @@ class Canvas(val width: Int, val height: Int) {
     fun writePixel(col: Int, row: Int, color: Color) {
         validatePixelCoordinates(row, col)
         canvas[row][col] = Color(color.r, color.g, color.b)
+    }
+
+    fun writeAllPixels(f: (x: Int, y: Int) -> Color) {
+        for (r in 0 until height) {
+            for (c in 0 until width) {
+                canvas[r][c] = f(c, r)
+            }
+        }
     }
 
     fun canvasToPPM(): String {
@@ -45,6 +54,7 @@ class Canvas(val width: Int, val height: Int) {
     private fun validatePixelCoordinates(row: Int, col: Int) {
         if (row >= height || col >= width || row < 0 || col < 0)
             throw IllegalArgumentException("Invalid pixel coordinates [$row,$col]")
+
     }
 
     private fun convertToPPMScale(f: Float): String {
@@ -58,8 +68,8 @@ class Canvas(val width: Int, val height: Int) {
     }
 
     private fun splitLongLinesForPPM(buffer: StringBuilder): String {
-        val splits = buffer.length / 70
-        val factor = 70
+        val splits = buffer.length / ppmLineLimit
+        val factor = ppmLineLimit
         for (i in 1..splits) {
             insertNewline(factor * i - 1, buffer)
         }
