@@ -1,5 +1,8 @@
 package core
 
+import java.util.Arrays
+
+
 fun point(x: Float, y: Float, z: Float): Point {
     return Point(x, y, z)
 }
@@ -76,4 +79,20 @@ fun tupleBuilder(x: Float, y: Float, z: Float, w: Byte, op1: Tuple, op2: Tuple =
 
     }
 
+}
+
+
+fun scaleLinear(range: List<Float>, sMin: Float, sMax: Float): List<Float> {
+
+    val sorted = range.sorted()
+    val min = sorted[0]
+    val max = sorted[sorted.size - 1]
+
+    return range.map { num -> (sMax - sMin) * (num - min) / (max - min) + sMin }
+
+}
+
+fun main(args: Array<String>) {
+    println(scaleLinear(listOf(-4f, 0f, 5f, 6f, 9f), 0f, 13f))
+    println(scaleLinear(listOf(0f, 4f, 5f, 6f, 9f), 0f, 9f))
 }
