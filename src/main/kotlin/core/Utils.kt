@@ -2,6 +2,7 @@ package core
 
 import java.util.Arrays
 
+const val EPSILON = 0.00001f
 
 fun point(x: Float, y: Float, z: Float): Point {
     return Point(x, y, z)
@@ -91,6 +92,11 @@ fun scaleLinear(range: List<Float>, sMin: Float, sMax: Float): List<Float> {
     return range.map { num -> (sMax - sMin) * (num - min) / (max - min) + sMin }
 
 }
+
+fun eq(l: Float, r: Float) = Math.abs(l - r) < EPSILON
+
+fun eq(l: Byte, r: Byte) = Math.abs(l - r) < EPSILON
+
 
 fun main(args: Array<String>) {
     println(scaleLinear(listOf(-4f, 0f, 5f, 6f, 9f), 0f, 13f))

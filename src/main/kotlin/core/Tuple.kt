@@ -2,20 +2,13 @@ package core
 
 open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MIN_VALUE) {
 
-    private val epsilon = 0.00001f
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
 
         other as Tuple
 
-        val diffx = Math.abs(x - other.x)
-        val diffy = Math.abs(y - other.y)
-        val diffz = Math.abs(z - other.z)
-        val diffw = Math.abs(w - other.w)
-
-        return diffx < epsilon && diffy < epsilon && diffz < epsilon && diffw < epsilon
+        return eq(this.x, other.x) && eq(this.y, other.y) && eq(this.z, other.z) && eq(this.w, other.w)
     }
 
     override fun hashCode(): Int {
@@ -50,7 +43,6 @@ open class Tuple(val x: Float, val y: Float, val z: Float, val w: Byte = Byte.MI
     operator fun times(scalar: Float): Tuple {
         return tupleBuilder(x * scalar, y * scalar, z * scalar, (w * scalar).toByte(), this)
     }
-
 
 
     operator fun div(scalar: Float): Tuple {
