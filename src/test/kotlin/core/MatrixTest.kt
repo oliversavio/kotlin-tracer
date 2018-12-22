@@ -148,5 +148,26 @@ class MatrixTest {
 
     }
 
+    @Test
+    fun test_multiply_matrix_with_identity_matrix() {
+        val M = Matrix(arrayOf(
+                floatArrayOf(1f, 2f, 3f, 4f),
+                floatArrayOf(2f, 4f, 4f, 2f),
+                floatArrayOf(8f, 6f, 4f, 1f),
+                floatArrayOf(0f, 0f, 0f, 1f)
+        ))
+
+        assertEquals(M, M * Matrix.identity())
+
+    }
+
+    @Test
+    fun test_multiply_tupple_with_identity_matrix() {
+        val b = Tuple(1f, 2f, 3f, 1)
+
+        assertEquals(b, Matrix.identity() * b)
+
+    }
+
 
 }

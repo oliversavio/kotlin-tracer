@@ -3,7 +3,6 @@ package core
 class Matrix(row: Int, col: Int) {
     val m: Array<Array<Float>> = Array(row) { Array(col) { 0f } }
 
-
     constructor(matrix: Array<FloatArray>) : this(matrix.size, matrix[0].size) {
         for (row in 0 until matrix.size) {
             for (col in 0 until matrix[row].size) {
@@ -71,6 +70,19 @@ class Matrix(row: Int, col: Int) {
                 rm.m[2][0],
                 rm.m[3][0].toByte())
 
+    }
+
+    companion object {
+        private val IDENT: Matrix = Matrix(arrayOf(
+                floatArrayOf(1f, 0f, 0f, 0f),
+                floatArrayOf(0f, 1f, 0f, 0f),
+                floatArrayOf(0f, 0f, 1f, 0f),
+                floatArrayOf(0f, 0f, 0f, 1f)
+        ))
+
+        fun identity(): Matrix {
+            return IDENT
+        }
     }
 
 
