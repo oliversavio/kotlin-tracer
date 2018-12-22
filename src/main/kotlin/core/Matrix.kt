@@ -72,6 +72,17 @@ class Matrix(row: Int, col: Int) {
 
     }
 
+    fun transpose(): Matrix {
+        val transpose = Matrix(this.m[0].size, this.m.size)
+        for (r in 0 until this.m.size) {
+            for (c in 0 until this.m[0].size) {
+                transpose.m[c][r] = this.m[r][c]
+            }
+        }
+        return transpose
+    }
+
+
     companion object {
         private val IDENT: Matrix = Matrix(arrayOf(
                 floatArrayOf(1f, 0f, 0f, 0f),

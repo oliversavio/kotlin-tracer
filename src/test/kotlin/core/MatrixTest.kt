@@ -170,4 +170,31 @@ class MatrixTest {
     }
 
 
+    @Test
+    fun test_matrix_transpose() {
+        val M = Matrix(arrayOf(
+                floatArrayOf(0f, 9f, 3f, 0f),
+                floatArrayOf(9f, 8f, 0f, 8f),
+                floatArrayOf(1f, 8f, 5f, 3f),
+                floatArrayOf(0f, 0f, 5f, 8f)
+        ))
+
+        val expected = Matrix(arrayOf(
+                floatArrayOf(0f, 9f, 1f, 0f),
+                floatArrayOf(9f, 8f, 8f, 0f),
+                floatArrayOf(3f, 0f, 5f, 5f),
+                floatArrayOf(0f, 8f, 3f, 8f)
+        ))
+
+        assertEquals(expected, M.transpose())
+
+    }
+
+
+    @Test
+    fun test_transpose_of_identoty_matrix() {
+        assertEquals(Matrix.identity(), Matrix.identity().transpose())
+    }
+
+
 }
