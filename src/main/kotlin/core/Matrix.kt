@@ -34,6 +34,46 @@ class Matrix(row: Int, col: Int) {
     }
 
 
+    operator fun times(m2: Matrix): Matrix {
+        val c1 = this.m[0].size
+        val r2 = m2.m.size
+
+        if (c1 != r2) throw IllegalStateException("Matrices cannot be multiplied")
+
+        val rows = this.m.size
+        val cols = m2.m[0].size
+
+        val nm = Matrix(rows, cols)
+
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                for (k in 0 until c1) {
+                    nm.m[r][c] += this.m[r][k] * m2.m[k][c]
+                }
+            }
+        }
+
+        return nm
+    }
+
+
+    operator fun times(tuple: Tuple): Tuple {
+        val tm = Matrix(4, 1)
+        tm.m[0][0] = tuple.x
+        tm.m[1][0] = tuple.y
+        tm.m[2][0] = tuple.z
+        tm.m[3][0] = tuple.w.toFloat()
+
+        val rm = times(tm)
+
+        return Tuple(rm.m[0][0],
+                rm.m[1][0],
+                rm.m[2][0],
+                rm.m[3][0].toByte())
+
+    }
+
+
 }
 
 
