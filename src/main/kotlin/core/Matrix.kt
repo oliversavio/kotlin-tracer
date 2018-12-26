@@ -83,7 +83,67 @@ class Matrix(row: Int, col: Int) {
     }
 
 
+    /**
+     * Calculate Determinant of 2x2 matrix
+     */
+    fun determinant(): Float {
+        if (this.m.size == 2 && this.m[0].size == 2) {
+            return this.m[0][0] * this.m[1][1] - this.m[0][1] * this.m[1][0]
+        } else {
+            var det = 0f
+            for (c in 0 until this.m[0].size) {
+                det += this.m[0][c] * cofactor(0, c)
+            }
+            return det
+        }
+    }
+
+    fun submatrix(rr: Int, cc: Int): Matrix {
+        val sub = Matrix(this.m.size - 1, this.m[0].size - 1)
+        var row = -1
+        for (r in 0 until this.m.size) {
+            if (r != rr) row += 1 else continue
+            var col = -1
+            for (c in 0 until this.m[0].size) {
+                if (c != cc) col += 1 else continue
+                sub.m[row][col] = this.m[r][c]
+            }
+        }
+        return sub
+    }
+
+    fun minor(row: Int, col: Int): Float {
+        val subMat = submatrix(row, col)
+        return subMat.determinant()
+    }
+
+    fun cofactor(row: Int, col: Int): Float {
+        val minor = minor(row, col)
+
+        return if ((row + col) % 2 != 0) -minor else minor
+    }
+
+    fun isInvertable(): Boolean {
+        return determinant() != 0f
+    }
+
+    fun inverse(): Matrix {
+        if (!isInvertable()) throw IllegalStateException("Matrix cannot be inverted")
+
+        val inverse = Matrix(this.m.size, this.m[0].size)
+        val det = determinant()
+        for (r in 0 until this.m.size) {
+            for (c in 0 until this.m[0].size) {
+                val cofactor = cofactor(r, c)
+                inverse.m[c][r] = cofactor / det
+            }
+        }
+        return inverse
+    }
+
+
     companion object {
+
         private val IDENT: Matrix = Matrix(arrayOf(
                 floatArrayOf(1f, 0f, 0f, 0f),
                 floatArrayOf(0f, 1f, 0f, 0f),
@@ -94,6 +154,7 @@ class Matrix(row: Int, col: Int) {
         fun identity(): Matrix {
             return IDENT
         }
+
     }
 
 
