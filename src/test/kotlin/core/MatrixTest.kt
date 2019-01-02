@@ -474,4 +474,51 @@ class MatrixTest {
     }
 
 
+    @Test
+    fun test_rotate_point_around_x_axis() {
+        val p = Point(0f, 1f, 0f)
+        val halfQuarter = Matrix.rotation((Math.PI / 4).toFloat(), Matrix.RotationAxis.X)
+        val fullQuarter = Matrix.rotation((Math.PI / 2).toFloat(), Matrix.RotationAxis.X)
+
+        assertEquals(Point(0f, (Math.sqrt(2.0) / 2).toFloat(), (Math.sqrt(2.0) / 2).toFloat()), halfQuarter * p)
+        assertEquals(Point(0f, 0f, 1f), fullQuarter * p)
+
+    }
+
+    @Test
+    fun test_inverse_of_x_rotates_in_opposite_direction() {
+        val p = Point(0f, 1f, 0f)
+        val halfQuarter = Matrix.rotation((Math.PI / 4).toFloat(), Matrix.RotationAxis.X)
+
+        assertEquals(Point(0f, (Math.sqrt(2.0) / 2).toFloat(), -(Math.sqrt(2.0) / 2).toFloat()), halfQuarter.inverse() * p)
+
+    }
+
+    @Test
+    fun test_rotate_around_y_axis() {
+        val p = Point(0f, 0f, 1f)
+
+        val halfQuarter = Matrix.rotation((Math.PI / 4).toFloat(), Matrix.RotationAxis.Y)
+        val fullQuarter = Matrix.rotation((Math.PI / 2).toFloat(), Matrix.RotationAxis.Y)
+
+
+        assertEquals(Point((Math.sqrt(2.0) / 2).toFloat(), 0f, (Math.sqrt(2.0) / 2).toFloat()), halfQuarter * p)
+        assertEquals(Point(1f, 0f, 0f), fullQuarter * p)
+
+    }
+
+    @Test
+    fun test_rotate_around_z_axis() {
+        val p = Point(0f, 1f, 0f)
+
+        val halfQuarter = Matrix.rotation((Math.PI / 4).toFloat(), Matrix.RotationAxis.Z)
+        val fullQuarter = Matrix.rotation((Math.PI / 2).toFloat(), Matrix.RotationAxis.Z)
+
+
+        assertEquals(Point(-(Math.sqrt(2.0) / 2).toFloat(),(Math.sqrt(2.0) / 2).toFloat(),0f), halfQuarter * p)
+        assertEquals(Point(-1f, 0f, 0f), fullQuarter * p)
+
+    }
+
+
 }

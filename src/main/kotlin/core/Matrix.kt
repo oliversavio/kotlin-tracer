@@ -2,23 +2,12 @@ package core
 
 import java.lang.StringBuilder
 
-/*interface Matrices<T> {
-
-    operator fun times(m: T): T
-    operator fun times(t: Tuple): T
-    fun transpose(): T
-    fun determinant(): T
-    fun submatrix(row: Int, col: Int): T
-    fun inverse(): T
-    fun minor(row: Int, col: Int): T
-    fun cofactor(row: Int, col: Int): T
-    fun isInvertable(): Boolean
-
-}*/
-
-
 class Matrix(row: Int, col: Int) {
     val m: Array<Array<Float>> = Array(row) { Array(col) { 0f } }
+
+    enum class RotationAxis {
+        X, Y, Z
+    }
 
     constructor(matrix: Array<FloatArray>) : this(matrix.size, matrix[0].size) {
         for (row in 0 until matrix.size) {
@@ -158,8 +147,13 @@ class Matrix(row: Int, col: Int) {
         return inverse
     }
 
+    fun translate(x: Float, y: Float, z: Float): Matrix = this * Matrix.translation(x, y, z)
+
+    fun scale(x: Float, y: Float, z: Float): Matrix = this * Matrix.scaling(x, y, z)
+
 
     companion object {
+
 
         fun identity(): Matrix {
             return Matrix(arrayOf(
@@ -186,6 +180,44 @@ class Matrix(row: Int, col: Int) {
             ident.m[1][1] = y
             ident.m[2][2] = z
             return ident
+        }
+
+
+        fun rotation(radians: Float, axis: RotationAxis): Matrix {
+            val ident = identity()
+            val sin_cos = getSineAndCosine(radians)
+
+            val sin_r = sin_cos.first
+            val cos_r = sin_cos.second
+
+            when (axis) {
+                RotationAxis.X -> {
+                    ident.m[1][1] = cos_r
+                    ident.m[1][2] = -sin_r
+                    ident.m[2][1] = sin_r
+                    ident.m[2][2] = cos_r
+                }
+                RotationAxis.Y -> {
+                    ident.m[0][0] = cos_r
+                    ident.m[0][2] = sin_r
+                    ident.m[2][0] = -sin_r
+                    ident.m[2][2] = cos_r
+                }
+                RotationAxis.Z -> {
+                    ident.m[0][0] = cos_r
+                    ident.m[0][1] = -sin_r
+                    ident.m[1][0] = sin_r
+                    ident.m[1][1] = cos_r
+
+                }
+            }
+            return ident
+        }
+
+        private fun getSineAndCosine(radians: Float): Pair<Float, Float> {
+            val r = radians.toDouble()
+
+            return Pair(Math.sin(r).toFloat(), Math.cos(r).toFloat())
         }
 
 
