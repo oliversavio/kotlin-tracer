@@ -1,5 +1,22 @@
 package core
 
+import java.lang.StringBuilder
+
+/*interface Matrices<T> {
+
+    operator fun times(m: T): T
+    operator fun times(t: Tuple): T
+    fun transpose(): T
+    fun determinant(): T
+    fun submatrix(row: Int, col: Int): T
+    fun inverse(): T
+    fun minor(row: Int, col: Int): T
+    fun cofactor(row: Int, col: Int): T
+    fun isInvertable(): Boolean
+
+}*/
+
+
 class Matrix(row: Int, col: Int) {
     val m: Array<Array<Float>> = Array(row) { Array(col) { 0f } }
 
@@ -10,7 +27,6 @@ class Matrix(row: Int, col: Int) {
             }
         }
     }
-
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -65,10 +81,11 @@ class Matrix(row: Int, col: Int) {
 
         val rm = times(tm)
 
-        return Tuple(rm.m[0][0],
-                rm.m[1][0],
-                rm.m[2][0],
-                rm.m[3][0].toByte())
+        when {
+            tuple is Vector -> return Vector(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+            tuple is Point -> return Point(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+            else -> return Tuple(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+        }
 
     }
 
@@ -144,19 +161,40 @@ class Matrix(row: Int, col: Int) {
 
     companion object {
 
-        private val IDENT: Matrix = Matrix(arrayOf(
-                floatArrayOf(1f, 0f, 0f, 0f),
-                floatArrayOf(0f, 1f, 0f, 0f),
-                floatArrayOf(0f, 0f, 1f, 0f),
-                floatArrayOf(0f, 0f, 0f, 1f)
-        ))
-
         fun identity(): Matrix {
-            return IDENT
+            return Matrix(arrayOf(
+                    floatArrayOf(1f, 0f, 0f, 0f),
+                    floatArrayOf(0f, 1f, 0f, 0f),
+                    floatArrayOf(0f, 0f, 1f, 0f),
+                    floatArrayOf(0f, 0f, 0f, 1f)
+            ))
         }
+
+        fun translation(x: Float, y: Float, z: Float): Matrix {
+
+            val ident = identity()
+            ident.m[0][3] = x
+            ident.m[1][3] = y
+            ident.m[2][3] = z
+
+            return ident
+        }
+
 
     }
 
+
+    override fun toString(): String {
+        val sb = StringBuilder()
+        for (r in 0 until m.size) {
+            for (c in 0 until m[0].size) {
+                sb.append(this.m[r][c])
+                sb.append("\t")
+            }
+            sb.append("\n")
+        }
+        return sb.toString()
+    }
 
 }
 

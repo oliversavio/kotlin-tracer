@@ -163,7 +163,7 @@ class MatrixTest {
     }
 
     @Test
-    fun test_multiply_tupple_with_identity_matrix() {
+    fun test_multiply_tuple_with_identity_matrix() {
         val b = Tuple(1f, 2f, 3f, 1)
 
         assertEquals(b, Matrix.identity() * b)
@@ -414,6 +414,36 @@ class MatrixTest {
 
 
     }
+
+
+    @Test
+    fun test_multiply_by_translation_matrix() {
+        val transform = Matrix.translation(5f, -3f, 2f)
+        val p = Point(-3f,4f,5f)
+
+        assertEquals(Point(2f,1f,7f), transform * p)
+
+    }
+
+    @Test
+    fun test_multiply_by_inverse_of_translation_matrix() {
+        val transform = Matrix.translation(5f, -3f, 2f)
+        val p = Point(-3f,4f,5f)
+
+        assertEquals(Point(-8f,7f,3f), transform.inverse() * p)
+
+    }
+
+    @Test
+    fun test_translation_does_not_affect_vectors() {
+        val transform = Matrix.translation(5f, -3f, 2f)
+        val v = Vector(-3f,4f,5f)
+
+        assertEquals(v, transform * v)
+    }
+
+
+
 
 
 }
