@@ -1,6 +1,5 @@
 package core
 
-import jdk.nashorn.internal.ir.annotations.Ignore
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -515,7 +514,7 @@ class MatrixTest {
         val fullQuarter = Matrix.rotation((Math.PI / 2).toFloat(), Matrix.RotationAxis.Z)
 
 
-        assertEquals(Point(-(Math.sqrt(2.0) / 2).toFloat(),(Math.sqrt(2.0) / 2).toFloat(),0f), halfQuarter * p)
+        assertEquals(Point(-(Math.sqrt(2.0) / 2).toFloat(), (Math.sqrt(2.0) / 2).toFloat(), 0f), halfQuarter * p)
         assertEquals(Point(-1f, 0f, 0f), fullQuarter * p)
 
     }

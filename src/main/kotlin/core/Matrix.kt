@@ -151,6 +151,8 @@ class Matrix(row: Int, col: Int) {
 
     fun scale(x: Float, y: Float, z: Float): Matrix = this * Matrix.scaling(x, y, z)
 
+    fun rotate(radians: Double, axis: RotationAxis): Matrix = this * rotation(radians.toFloat(), axis)
+
 
     companion object {
 
