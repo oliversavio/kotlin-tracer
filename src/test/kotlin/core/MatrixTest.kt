@@ -419,31 +419,59 @@ class MatrixTest {
     @Test
     fun test_multiply_by_translation_matrix() {
         val transform = Matrix.translation(5f, -3f, 2f)
-        val p = Point(-3f,4f,5f)
+        val p = Point(-3f, 4f, 5f)
 
-        assertEquals(Point(2f,1f,7f), transform * p)
+        assertEquals(Point(2f, 1f, 7f), transform * p)
 
     }
 
     @Test
     fun test_multiply_by_inverse_of_translation_matrix() {
         val transform = Matrix.translation(5f, -3f, 2f)
-        val p = Point(-3f,4f,5f)
+        val p = Point(-3f, 4f, 5f)
 
-        assertEquals(Point(-8f,7f,3f), transform.inverse() * p)
+        assertEquals(Point(-8f, 7f, 3f), transform.inverse() * p)
 
     }
 
     @Test
     fun test_translation_does_not_affect_vectors() {
         val transform = Matrix.translation(5f, -3f, 2f)
-        val v = Vector(-3f,4f,5f)
+        val v = Vector(-3f, 4f, 5f)
 
         assertEquals(v, transform * v)
     }
 
 
+    @Test
+    fun test_a_scaling_matrix_applied_to_a_point() {
+        val transformation = Matrix.scaling(2f, 3f, 4f)
+        val p = Point(-4f, 6f, 8f)
+        assertEquals(Point(-8f, 18f, 32f), transformation * p)
+    }
 
+    @Test
+    fun test_a_scaling_matrix_applied_to_a_vector() {
+        val transformation = Matrix.scaling(2f, 3f, 4f)
+        val v = Vector(-4f, 6f, 8f)
+        assertEquals(Vector(-8f, 18f, 32f), transformation * v)
+    }
+
+
+    @Test
+    fun test_multiply_by_inverse_of_scaling_matrix() {
+        val transformation = Matrix.scaling(2f, 3f, 4f)
+        val v = Vector(-4f, 6f, 8f)
+        assertEquals(Vector(-2f, 2f, 2f), transformation.inverse() * v)
+    }
+
+
+    @Test
+    fun test_reflection_is_scalig_by_negative_value() {
+        val transformation = Matrix.scaling(-1f, 1f, 1f)
+        val p = Point(2f, 3f, 4f)
+        assertEquals(Point(-2f, 3f, 4f), transformation * p)
+    }
 
 
 }

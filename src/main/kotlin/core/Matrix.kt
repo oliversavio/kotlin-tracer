@@ -180,6 +180,14 @@ class Matrix(row: Int, col: Int) {
             return ident
         }
 
+        fun scaling(x: Float, y: Float, z: Float): Matrix {
+            val ident = identity()
+            ident.m[0][0] = x
+            ident.m[1][1] = y
+            ident.m[2][2] = z
+            return ident
+        }
+
 
     }
 
