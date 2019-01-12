@@ -519,5 +519,47 @@ class MatrixTest {
 
     }
 
+    @Test
+    fun test_shear_x_in_propotion_to_y() {
+        val transform = Matrix.shearing(xy = 1f)
+        assertEquals(Point(5f,3f,4f), transform * Point(2f,3f,4f))
+    }
+
+    @Test
+    fun test_shear_x_in_propotion_to_z() {
+        val transform = Matrix.shearing(xz = 1f)
+        assertEquals(Point(6f,3f,4f), transform * Point(2f,3f,4f))
+    }
+
+    @Test
+    fun test_shear_y_in_propotion_to_x() {
+        val transform = Matrix.shearing(yx = 1f)
+        assertEquals(Point(2f,5f,4f), transform * Point(2f,3f,4f))
+    }
+
+    @Test
+    fun test_shear_y_in_propotion_to_z() {
+        val transform = Matrix.shearing(yz = 1f)
+        assertEquals(Point(2f,7f,4f), transform * Point(2f,3f,4f))
+    }
+
+    @Test
+    fun test_shear_z_in_propotion_to_x() {
+        val transform = Matrix.shearing(zx = 1f)
+        assertEquals(Point(2f,3f,6f), transform * Point(2f,3f,4f))
+    }
+
+    @Test
+    fun test_shear_z_in_propotion_to_y() {
+        val transform = Matrix.shearing(zy = 1f)
+        assertEquals(Point(2f,3f,7f), transform * Point(2f,3f,4f))
+    }
+
+
+
+
+
+
+
 
 }

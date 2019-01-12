@@ -216,6 +216,20 @@ class Matrix(row: Int, col: Int) {
             return ident
         }
 
+        fun shearing(xy: Float = 0f, xz: Float = 0f, yx: Float = 0f, yz: Float = 0f, zx: Float = 0f, zy: Float = 0f): Matrix {
+            val ident = identity()
+
+            ident.m[0][1] = xy
+            ident.m[0][2] = xz
+            ident.m[1][0] = yx
+            ident.m[1][2] = yz
+            ident.m[2][0] = zx
+            ident.m[2][1] = zy
+
+            return ident
+        }
+
+
         private fun getSineAndCosine(radians: Float): Pair<Float, Float> {
             val r = radians.toDouble()
 
