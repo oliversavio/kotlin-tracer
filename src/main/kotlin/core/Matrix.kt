@@ -147,11 +147,11 @@ class Matrix(row: Int, col: Int) {
         return inverse
     }
 
-    fun translate(x: Float, y: Float, z: Float): Matrix = this * Matrix.translation(x, y, z)
+    fun translate(x: Float, y: Float, z: Float): Matrix = translation(x, y, z) * this
 
-    fun scale(x: Float, y: Float, z: Float): Matrix = this * Matrix.scaling(x, y, z)
+    fun scale(x: Float, y: Float, z: Float): Matrix = scaling(x, y, z) * this
 
-    fun rotate(radians: Double, axis: RotationAxis): Matrix = this * rotation(radians.toFloat(), axis)
+    fun rotate(radians: Double, axis: RotationAxis): Matrix = rotation(radians.toFloat(), axis) * this
 
 
     companion object {
