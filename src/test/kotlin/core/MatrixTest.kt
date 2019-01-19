@@ -588,4 +588,18 @@ class MatrixTest {
     }
 
 
+    @Test
+    fun test_translate_points() {
+
+        val p = Point(0f,0f,1f)
+
+        val T = Matrix.identity()
+                .translate(50f,0f,50f)
+
+        println(T * p)
+
+
+    }
+
+
 }

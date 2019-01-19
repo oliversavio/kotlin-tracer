@@ -51,6 +51,8 @@ class Canvas(val width: Int, val height: Int) {
         return sBuffer.toString()
     }
 
+    fun draw(x: List<Float>, y: List<Float>) = x.zip(y).forEach { writePixel(it.first.toInt(), it.second.toInt(), Color.white()) }
+
     private fun validatePixelCoordinates(row: Int, col: Int) {
         if (row >= height || col >= width || row < 0 || col < 0)
             throw IllegalArgumentException("Invalid pixel coordinates [$row,$col]")
@@ -84,5 +86,6 @@ class Canvas(val width: Int, val height: Int) {
             insertNewline(factor - 1, buffer)
         }
     }
+
 
 }

@@ -93,6 +93,18 @@ fun scaleLinear(range: List<Float>, sMin: Float, sMax: Float): List<Float> {
 
 }
 
+
+fun linearScale(range: List<Float>): List<Float> {
+
+    val sorted = range.sorted()
+    val min = sorted[0]
+    val max = sorted[sorted.size - 1]
+    val sMin = 0f
+    val sMax = max - min
+
+    return range.map { num -> (sMax - sMin) * (num - min) / (max - min) + sMin }
+}
+
 fun eq(l: Float, r: Float) = Math.abs(l - r) < EPSILON
 
 fun eq(l: Byte, r: Byte) = Math.abs(l - r) < EPSILON
