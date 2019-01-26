@@ -28,27 +28,39 @@ class Canvas(val width: Int, val height: Int) {
 
     fun canvasToPPM(): String {
         val sBuffer = StringBuilder(header)
-        sBuffer.append("\n")
-        sBuffer.append(width).append(space).append(height)
-        sBuffer.append("\n")
-        sBuffer.append(maxPixelValue)
-        sBuffer.append("\n")
+        appendPPMFileHeader(sBuffer)
 
         for (r in 0 until height) {
             val rowBuffer = StringBuilder()
             for (c in 0 until width) {
-                rowBuffer.append(convertToPPMScale(canvas[r][c].r))
-                rowBuffer.append(space)
-                rowBuffer.append(convertToPPMScale(canvas[r][c].g))
-                rowBuffer.append(space)
-                rowBuffer.append(convertToPPMScale(canvas[r][c].b))
-                if (c < width - 1) rowBuffer.append(space)
+                appendRBGValues(rowBuffer, r, c)
+                appendSpaceIfNotLastPixel(c, rowBuffer)
             }
             sBuffer.append(splitLongLinesForPPM(rowBuffer))
             sBuffer.append("\n")
         }
 
         return sBuffer.toString()
+    }
+
+    private fun appendSpaceIfNotLastPixel(c: Int, rowBuffer: StringBuilder) {
+        if (c < width - 1) rowBuffer.append(space)
+    }
+
+    private fun appendRBGValues(rowBuffer: StringBuilder, r: Int, c: Int) {
+        rowBuffer.append(convertToPPMScale(canvas[r][c].r))
+        rowBuffer.append(space)
+        rowBuffer.append(convertToPPMScale(canvas[r][c].g))
+        rowBuffer.append(space)
+        rowBuffer.append(convertToPPMScale(canvas[r][c].b))
+    }
+
+    private fun appendPPMFileHeader(sBuffer: StringBuilder) {
+        sBuffer.append("\n")
+        sBuffer.append(width).append(space).append(height)
+        sBuffer.append("\n")
+        sBuffer.append(maxPixelValue)
+        sBuffer.append("\n")
     }
 
     fun draw(x: List<Float>, y: List<Float>) = x.zip(y).forEach { writePixel(it.first.toInt(), it.second.toInt(), Color.white()) }
