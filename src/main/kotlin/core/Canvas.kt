@@ -74,10 +74,10 @@ class Canvas(val width: Int, val height: Int) {
     private fun convertToPPMScale(f: Float): String {
         val r = Math.round(f * 255.0).toInt()
 
-        when {
-            r > 255 -> return "255"
-            r < 0 -> return "0"
-            else -> return r.toString()
+        return when {
+            r > 255 -> "255"
+            r < 0 -> "0"
+            else -> r.toString()
         }
     }
 

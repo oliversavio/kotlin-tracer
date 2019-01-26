@@ -1,7 +1,5 @@
 package core
 
-import java.lang.StringBuilder
-
 class Matrix(row: Int, col: Int) {
     val m: Array<Array<Float>> = Array(row) { Array(col) { 0f } }
 
@@ -70,10 +68,10 @@ class Matrix(row: Int, col: Int) {
 
         val rm = times(tm)
 
-        when {
-            tuple is Vector -> return Vector(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
-            tuple is Point -> return Point(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
-            else -> return Tuple(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+        return when (tuple) {
+            is Vector -> Vector(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+            is Point -> Point(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
+            else -> Tuple(rm.m[0][0], rm.m[1][0], rm.m[2][0], rm.m[3][0].toByte())
         }
 
     }
@@ -93,14 +91,14 @@ class Matrix(row: Int, col: Int) {
      * Calculate Determinant of 2x2 matrix
      */
     fun determinant(): Float {
-        if (this.m.size == 2 && this.m[0].size == 2) {
-            return this.m[0][0] * this.m[1][1] - this.m[0][1] * this.m[1][0]
+        return if (this.m.size == 2 && this.m[0].size == 2) {
+            this.m[0][0] * this.m[1][1] - this.m[0][1] * this.m[1][0]
         } else {
             var det = 0f
             for (c in 0 until this.m[0].size) {
                 det += this.m[0][c] * cofactor(0, c)
             }
-            return det
+            det
         }
     }
 
@@ -156,7 +154,6 @@ class Matrix(row: Int, col: Int) {
 
     companion object {
 
-
         fun identity(): Matrix {
             return Matrix(arrayOf(
                     floatArrayOf(1f, 0f, 0f, 0f),
@@ -186,34 +183,16 @@ class Matrix(row: Int, col: Int) {
 
 
         fun rotation(radians: Float, axis: RotationAxis): Matrix {
-            val ident = identity()
             val sin_cos = getSineAndCosine(radians)
 
             val sin_r = sin_cos.first
             val cos_r = sin_cos.second
 
-            when (axis) {
-                RotationAxis.X -> {
-                    ident.m[1][1] = cos_r
-                    ident.m[1][2] = -sin_r
-                    ident.m[2][1] = sin_r
-                    ident.m[2][2] = cos_r
-                }
-                RotationAxis.Y -> {
-                    ident.m[0][0] = cos_r
-                    ident.m[0][2] = sin_r
-                    ident.m[2][0] = -sin_r
-                    ident.m[2][2] = cos_r
-                }
-                RotationAxis.Z -> {
-                    ident.m[0][0] = cos_r
-                    ident.m[0][1] = -sin_r
-                    ident.m[1][0] = sin_r
-                    ident.m[1][1] = cos_r
-
-                }
+            return when (axis) {
+                RotationAxis.X -> RotationTransformFactory.X.transform(cos_r, sin_r)
+                RotationAxis.Y -> RotationTransformFactory.Y.transform(cos_r, sin_r)
+                RotationAxis.Z -> RotationTransformFactory.Z.transform(cos_r, sin_r)
             }
-            return ident
         }
 
         fun shearing(xy: Float = 0f, xz: Float = 0f, yx: Float = 0f, yz: Float = 0f, zx: Float = 0f, zy: Float = 0f): Matrix {
@@ -229,11 +208,49 @@ class Matrix(row: Int, col: Int) {
             return ident
         }
 
-
         private fun getSineAndCosine(radians: Float): Pair<Float, Float> {
             val r = radians.toDouble()
 
             return Pair(Math.sin(r).toFloat(), Math.cos(r).toFloat())
+        }
+
+
+        private enum class RotationTransformFactory {
+
+            X {
+                override fun transform(cos_r: Float, sin_r: Float): Matrix {
+                    val ident = identity()
+                    ident.m[1][1] = cos_r
+                    ident.m[1][2] = -sin_r
+                    ident.m[2][1] = sin_r
+                    ident.m[2][2] = cos_r
+                    return ident
+                }
+
+            },
+            Y {
+                override fun transform(cos_r: Float, sin_r: Float): Matrix {
+                    val ident = identity()
+                    ident.m[0][0] = cos_r
+                    ident.m[0][2] = sin_r
+                    ident.m[2][0] = -sin_r
+                    ident.m[2][2] = cos_r
+                    return ident
+                }
+
+            },
+            Z {
+                override fun transform(cos_r: Float, sin_r: Float): Matrix {
+                    val ident = identity()
+                    ident.m[0][0] = cos_r
+                    ident.m[0][1] = -sin_r
+                    ident.m[1][0] = sin_r
+                    ident.m[1][1] = cos_r
+                    return ident
+                }
+            };
+
+            abstract fun transform(cos_r: Float, sin_r: Float): Matrix
         }
 
 
