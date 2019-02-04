@@ -30,4 +30,40 @@ class RayTest {
 
     }
 
+
+    @Test
+    fun test_a_ray_intersects_with_sphere_on_tangent() {
+        val ray = Ray(Point(0f, 1f, -5f), Vector(0f, 0f, 1f))
+        val sphere = Sphere()
+        val xs = sphere.intersect(ray)
+
+        assertEquals(2, xs.size)
+        assertEquals(5f, xs[0])
+        assertEquals(5f, xs[1])
+
+    }
+
+
+    @Test
+    fun test_a_ray_misses_sphere() {
+        val ray = Ray(Point(0f, 2f, -5f), Vector(0f, 0f, 1f))
+        val sphere = Sphere()
+        val xs = sphere.intersect(ray)
+
+        assertEquals(0, xs.size)
+    }
+
+
+    @Test
+    fun test_a_ray_originates_inside_sphere() {
+        val ray = Ray(Point(0f, 0f, 0f), Vector(0f, 0f, 1f))
+        val sphere = Sphere()
+        val xs = sphere.intersect(ray)
+
+        assertEquals(2, xs.size)
+        assertEquals(-1f, xs[0])
+        assertEquals(1f, xs[1])
+
+    }
+
 }
