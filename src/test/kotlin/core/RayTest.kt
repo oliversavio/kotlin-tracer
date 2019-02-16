@@ -1,6 +1,7 @@
 package core
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 
 
@@ -100,6 +101,70 @@ class RayTest {
         assertEquals(s, xs[0].obj)
         assertEquals(s, xs[1].obj)
     }
+
+    @Test
+    fun test_hit_when_all_positive_t() {
+        val s = Sphere()
+        val i1 = Intersection(1f, s)
+        val i2 = Intersection(2f, s)
+        val xs = intersections(i1, i2)
+
+        assertEquals(i1, hit(xs))
+
+    }
+
+    @Test
+    fun test_hit_when_intersections_have_negative_value() {
+        val s = Sphere()
+        val i1 = Intersection(-1f, s)
+        val i2 = Intersection(1f, s)
+        val xs = intersections(i1, i2)
+
+        assertEquals(i2, hit(xs))
+
+    }
+
+    @Test
+    fun test_hit_when_intersections_have_all_negative_value() {
+        val s = Sphere()
+        val i1 = Intersection(-1f, s)
+        val i2 = Intersection(-2f, s)
+        val xs = intersections(i1, i2)
+
+        assertNull(hit(xs))
+
+    }
+
+    @Test
+    fun test_hit_is_always_lowest_intersection_value() {
+        val s = Sphere()
+        val i1 = Intersection(5f, s)
+        val i2 = Intersection(7f, s)
+        val i3 = Intersection(-3f, s)
+        val i4 = Intersection(2f, s)
+        val xs = intersections(i1, i2, i3, i4)
+
+        assertEquals(i4, hit(xs))
+    }
+
+    @Test
+    fun test_translating_a_ray() {
+        val r = Ray(Point(1f,2f,3f), Vector(0f,1f,0f))
+        val m = Matrix.translation(3f,4f,5f)
+        val rt = r.transform(m)
+        assertEquals(Point(4f,6f,8f), rt.origin)
+        assertEquals(Vector(0f,1f,0f), rt.direction)
+    }
+
+    @Test
+    fun test_scaling_a_ray() {
+        val r = Ray(Point(1f,2f,3f), Vector(0f,1f,0f))
+        val m = Matrix.scaling(2f,3f,4f)
+        val rt = r.transform(m)
+        assertEquals(Point(2f,6f,12f), rt.origin)
+        assertEquals(Vector(0f,3f,0f), rt.direction)
+    }
+
 
 
 }

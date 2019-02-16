@@ -4,6 +4,14 @@ import java.util.*
 
 data class Ray(val origin: Point, val direction: Vector) {
     fun position(time: Float) = Point(this.origin + this.direction * time)
+
+    fun transform(transform: Matrix): Ray {
+        val originTrans = transform * this.origin
+        val directionTrans = transform * this.direction
+        return Ray(Point(originTrans), Vector(directionTrans))
+    }
+
+
 }
 
 interface WObject
@@ -38,5 +46,8 @@ fun intersect(sphere: Sphere, ray: Ray): List<Intersection> {
 
     return intersections(Intersection(t1.toFloat(), sphere), Intersection(t2.toFloat(), sphere))
 }
+
+fun hit(intersections: List<Intersection>) = intersections.filter { it.t > -1 }.sortedWith(compareBy(Intersection::t)).firstOrNull()
+
 
 private fun discriminant(sphereToRay: Vector, a: Float, b: Float, c: Float): Float = Math.pow(b.toDouble(), 2.0).toFloat() - (4 * a * c)
