@@ -149,22 +149,54 @@ class RayTest {
 
     @Test
     fun test_translating_a_ray() {
-        val r = Ray(Point(1f,2f,3f), Vector(0f,1f,0f))
-        val m = Matrix.translation(3f,4f,5f)
+        val r = Ray(Point(1f, 2f, 3f), Vector(0f, 1f, 0f))
+        val m = Matrix.translation(3f, 4f, 5f)
         val rt = r.transform(m)
-        assertEquals(Point(4f,6f,8f), rt.origin)
-        assertEquals(Vector(0f,1f,0f), rt.direction)
+        assertEquals(Point(4f, 6f, 8f), rt.origin)
+        assertEquals(Vector(0f, 1f, 0f), rt.direction)
     }
 
     @Test
     fun test_scaling_a_ray() {
-        val r = Ray(Point(1f,2f,3f), Vector(0f,1f,0f))
-        val m = Matrix.scaling(2f,3f,4f)
+        val r = Ray(Point(1f, 2f, 3f), Vector(0f, 1f, 0f))
+        val m = Matrix.scaling(2f, 3f, 4f)
         val rt = r.transform(m)
-        assertEquals(Point(2f,6f,12f), rt.origin)
-        assertEquals(Vector(0f,3f,0f), rt.direction)
+        assertEquals(Point(2f, 6f, 12f), rt.origin)
+        assertEquals(Vector(0f, 3f, 0f), rt.direction)
     }
 
+    @Test
+    fun test_default_sphere_transform() {
+        val s = Sphere()
+        assertEquals(Matrix.identity(), s.transform)
+    }
+
+    @Test
+    fun test_modify_sphere_transform() {
+        val s = Sphere()
+        val t = Matrix.translation(2f, 3f, 4f)
+        s.transform = t
+        assertEquals(t, s.transform)
+    }
+
+    @Test
+    fun test_intersect_scaled_sphere_with_ray() {
+        val r = Ray(Point(z = -5f), Vector(z = 1f))
+        val s = Sphere(transform = Matrix.scaling(2f,2f,2f))
+        val xs = intersect(s, r)
+        assertEquals(2, xs.size)
+        assertEquals(3f, xs[0].t)
+        assertEquals(7f, xs[1].t)
+    }
+
+    @Test
+    fun test_intersect_a_translated_sphere_with_ray() {
+        val r = Ray(Point(z = -5f), Vector(z = 1f))
+        val s = Sphere(transform = Matrix.translation(5f,0f,0f))
+        val xs = intersect(s, r)
+        assertEquals(0, xs.size)
+
+    }
 
 
 }

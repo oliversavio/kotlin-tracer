@@ -16,7 +16,10 @@ data class Ray(val origin: Point, val direction: Vector) {
 
 interface WObject
 
-data class Sphere(val id: String = UUID.randomUUID().toString()) : WObject
+data class Sphere(val id: String = UUID.randomUUID().toString(), var transform: Matrix = Matrix.identity()) : WObject {
+
+
+}
 
 data class Intersection(val t: Float, val obj: WObject)
 
@@ -27,7 +30,9 @@ fun intersections(vararg intersection: Intersection): List<Intersection> {
 }
 
 
-fun intersect(sphere: Sphere, ray: Ray): List<Intersection> {
+fun intersect(sphere: Sphere, r: Ray): List<Intersection> {
+
+    val ray = r.transform(sphere.transform.inverse())
 
     val sphereToRay = Vector(ray.origin - Point())
     val a = dot(ray.direction, ray.direction)
@@ -47,7 +52,12 @@ fun intersect(sphere: Sphere, ray: Ray): List<Intersection> {
     return intersections(Intersection(t1.toFloat(), sphere), Intersection(t2.toFloat(), sphere))
 }
 
-fun hit(intersections: List<Intersection>) = intersections.filter { it.t > -1 }.sortedWith(compareBy(Intersection::t)).firstOrNull()
+fun hit(intersections: List<Intersection>) =
+        intersections
+                .filter { it.t > -1 }
+                .sortedWith(compareBy(Intersection::t))
+                .firstOrNull()
 
 
-private fun discriminant(sphereToRay: Vector, a: Float, b: Float, c: Float): Float = Math.pow(b.toDouble(), 2.0).toFloat() - (4 * a * c)
+private fun discriminant(sphereToRay: Vector, a: Float, b: Float, c: Float): Float =
+        Math.pow(b.toDouble(), 2.0).toFloat() - (4 * a * c)
