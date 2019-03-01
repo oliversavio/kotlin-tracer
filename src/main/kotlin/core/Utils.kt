@@ -1,5 +1,7 @@
 package core
 
+import java.io.File
+
 
 const val EPSILON = 0.00001f
 
@@ -112,4 +114,10 @@ fun eq(l: Byte, r: Byte) = Math.abs(l - r) < EPSILON
 fun main(args: Array<String>) {
     println(scaleLinear(listOf(-4f, 0f, 5f, 6f, 9f), 0f, 13f))
     println(scaleLinear(listOf(0f, 4f, 5f, 6f, 9f), 0f, 9f))
+}
+
+fun writeStringToFile(input: String, fileName: String) {
+    if (input != null && !input.isEmpty()) {
+        File(fileName).writeText(input)
+    }
 }

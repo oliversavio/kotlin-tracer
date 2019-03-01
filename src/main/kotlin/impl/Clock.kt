@@ -1,8 +1,9 @@
-package cannon
+package impl
 
 import core.Canvas
 import core.Matrix
 import core.Point
+import core.writeStringToFile
 import java.io.File
 
 class Clock(canvasWidth: Int, canvasHeight: Int) {
@@ -24,7 +25,8 @@ class Clock(canvasWidth: Int, canvasHeight: Int) {
         val y = points.map { it.z }
 
         canvas.draw(x, y)
-        File("/Users/olivermascarenhas/Desktop/Clock.ppm").writeText(canvas.canvasToPPM())
+        writeStringToFile(canvas.canvasToPPM(), "/Users/olivermascarenhas/Desktop/Clock.ppm")
+
     }
 
 
