@@ -151,6 +151,8 @@ class Matrix(row: Int, col: Int) {
 
     fun rotate(radians: Double, axis: RotationAxis): Matrix = rotation(radians.toFloat(), axis) * this
 
+    fun shear(xy: Float = 0f, xz: Float = 0f, yx: Float = 0f, yz: Float = 0f, zx: Float = 0f, zy: Float = 0f): Matrix =
+            shearing(xy, xz, yx, yz, zx, zy) * this
 
     companion object {
 
