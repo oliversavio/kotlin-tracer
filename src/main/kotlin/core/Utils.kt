@@ -116,8 +116,7 @@ fun main(args: Array<String>) {
     println(scaleLinear(listOf(0f, 4f, 5f, 6f, 9f), 0f, 9f))
 }
 
-fun writeStringToFile(input: String, fileName: String) {
-    if (input != null && !input.isEmpty()) {
-        File(fileName).writeText(input)
-    }
+fun writeCanvasToFile(canvas: Canvas, fileName: String = "canvas.ppm") {
+    if (canvas == null) throw IllegalStateException("Canvas object is Null")
+    File(fileName).writeText(canvas.canvasToPPM())
 }
