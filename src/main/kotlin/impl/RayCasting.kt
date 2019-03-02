@@ -35,14 +35,23 @@ class RayCasting(val rayOrigin: Point, val wallZ: Float = 10f, wallSize: Float =
         val pixels = calculateWorldXY()
         pixels.parallelStream()
                 .forEach {
-                    val position = Point(it.worldX, it.worldY, wallZ)
-                    val r = Ray(rayOrigin, normalize(Vector(position - rayOrigin)))
+                    val r = createRayToCurrentLocation(it)
                     val xs = intersect(shape as Sphere, r)
-                    if (hit(xs) != null) {
-                        canvas.writePixel(it.px, it.py, color)
-                    }
+                    renderPixelOnHit(xs, it)
                 }
         return canvas
+    }
+
+    private fun renderPixelOnHit(xs: List<Intersection>, it: RenderCoords) {
+        if (hit(xs) != null) {
+            canvas.writePixel(it.px, it.py, color)
+        }
+    }
+
+    private fun createRayToCurrentLocation(it: RenderCoords): Ray {
+        val position = Point(it.worldX, it.worldY, wallZ)
+        val r = Ray(rayOrigin, normalize(Vector(position - rayOrigin)))
+        return r
     }
 
 }
