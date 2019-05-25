@@ -182,7 +182,7 @@ class RayTest {
     @Test
     fun test_intersect_scaled_sphere_with_ray() {
         val r = Ray(Point(z = -5f), Vector(z = 1f))
-        val s = Sphere(transform = Matrix.scaling(2f,2f,2f))
+        val s = Sphere(transform = Matrix.scaling(2f, 2f, 2f))
         val xs = intersect(s, r)
         assertEquals(2, xs.size)
         assertEquals(3f, xs[0].t)
@@ -192,10 +192,49 @@ class RayTest {
     @Test
     fun test_intersect_a_translated_sphere_with_ray() {
         val r = Ray(Point(z = -5f), Vector(z = 1f))
-        val s = Sphere(transform = Matrix.translation(5f,0f,0f))
+        val s = Sphere(transform = Matrix.translation(5f, 0f, 0f))
         val xs = intersect(s, r)
         assertEquals(0, xs.size)
 
+    }
+
+    @Test
+    fun test_normal_of_sphere_at_point_on_x_axis() {
+        val s = Sphere()
+        assertEquals(Vector(x = 1f), normalAt(s, Point(x = 1f)))
+    }
+
+    @Test
+    fun test_normal_of_sphere_at_point_on_y_axis() {
+        val s = Sphere()
+        assertEquals(Vector(y = 1f), normalAt(s, Point(y = 1f)))
+    }
+
+    @Test
+    fun test_normal_of_sphere_at_point_on_z_axis() {
+        val s = Sphere()
+        assertEquals(Vector(z = 1f), normalAt(s, Point(z = 1f)))
+    }
+
+    @Test
+    fun test_normal_at_shere_at_non_axial_point() {
+        val s = Sphere()
+        val xyz = (Math.sqrt(3.0) / 3).toFloat()
+        assertEquals(Vector(x = xyz, y = xyz, z = xyz), normalAt(s, Point(x = xyz, y = xyz, z = xyz)))
+    }
+
+    @Test
+    fun test_nornal_vector_is_normalized() {
+        val s = Sphere()
+        val xyz = (Math.sqrt(3.0) / 3).toFloat()
+        val n = normalAt(s, Point(x = xyz, y = xyz, z = xyz))
+        assertEquals(normalize(n), n)
+    }
+
+    @Test
+    fun test_compute_normal_on_transated_sphere() {
+        val s = Sphere(transform = Matrix.translation(0f, 1f, 0f))
+        assertEquals(Vector(0f, 0.70711f, -0.70711f), normalAt(s, Point(0f, 0.70711f, -0.70711f)))
     }
 
 

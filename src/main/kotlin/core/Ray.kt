@@ -59,5 +59,13 @@ fun hit(intersections: List<Intersection>) =
                 .firstOrNull()
 
 
+fun normalAt(sphere: Sphere, worldPoint: Point): Vector {
+    val objectPoint = sphere.transform.inverse() * worldPoint
+    val objectNormal = objectPoint - Point()
+    val worldNormal = sphere.transform.inverse().transpose() * objectNormal
+    return normalize(Vector(worldNormal))
+}
+
+
 private fun discriminant(sphereToRay: Vector, a: Float, b: Float, c: Float): Float =
         Math.pow(b.toDouble(), 2.0).toFloat() - (4 * a * c)

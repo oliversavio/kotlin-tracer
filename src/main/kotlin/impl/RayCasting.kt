@@ -65,7 +65,6 @@ fun main(args: Array<String>) {
         writeCanvasToFile(canvas, "/Users/olivermascarenhas/Desktop/Canvas_out_$i.ppm")
     }
 
-
     var shrinkOnY = Matrix.scaling(1f, 0.5f, 1f)
     val canvas = RayCasting(Point(z = -5f)).render(Sphere(transform = shrinkOnY))
     writeCanvasToFile(canvas, "/Users/olivermascarenhas/Desktop/ShrinkY.ppm")
