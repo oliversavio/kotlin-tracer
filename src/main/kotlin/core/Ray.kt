@@ -16,10 +16,7 @@ data class Ray(val origin: Point, val direction: Vector) {
 
 interface WObject
 
-data class Sphere(val id: String = UUID.randomUUID().toString(), var transform: Matrix = Matrix.identity()) : WObject {
-
-
-}
+data class Sphere(val id: String = UUID.randomUUID().toString(), var transform: Matrix = Matrix.identity()) : WObject
 
 data class Intersection(val t: Float, val obj: WObject)
 
@@ -60,9 +57,11 @@ fun hit(intersections: List<Intersection>) =
 
 
 fun normalAt(sphere: Sphere, worldPoint: Point): Vector {
-    val objectPoint = sphere.transform.inverse() * worldPoint
+    val inverse = sphere.transform.inverse()
+    val objectPoint = inverse * worldPoint
     val objectNormal = objectPoint - Point()
-    val worldNormal = sphere.transform.inverse().transpose() * objectNormal
+    val worldNormal = inverse.transpose() * objectNormal
+
     return normalize(Vector(worldNormal))
 }
 
